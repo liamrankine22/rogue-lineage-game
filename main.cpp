@@ -3,6 +3,7 @@
 #include <card.hpp>
 
 typedef enum GameScreen {TITLE, GAMEPLAY} GameScreen;
+typedef enum Action {CHAR_SELECT, ACTION_SELECT, ATTACK_SELECT, ITEM_SELECT, LOGGUS, CPU_MOVE} Action;
 
 void DrawTitleScreen(){
     DrawText("ROGUE LINEAGE (FREAKY EDITION)", 225, 10, 20, RAYWHITE);
@@ -10,12 +11,39 @@ void DrawTitleScreen(){
     DrawText("Press [ESC] to exit", 225, 200, 20, RAYWHITE);
 }
 
-void DrawGameplayScreen(Texture2D background_texture){
+void DrawGameplayScreen(Texture2D background_texture, int SCREEN_WIDTH, int SCREEN_HEIGHT, Action Action){
     if (background_texture.id != 0) {
         DrawTexture(background_texture, 0, 0, WHITE);
     } else {
         DrawText("Background texture failed to load!", 100, 100, 20, RED);
     }
+    switch(Action)
+    {
+        case(CHAR_SELECT):
+        {
+
+        } break;
+        case(ACTION_SELECT):
+        {
+
+        } break;
+        case (ATTACK_SELECT):
+        {
+
+        }break;
+        case(ITEM_SELECT):
+        {
+
+        } break;
+        case(LOGGUS):
+        {
+            CloseWindow();
+        } break;
+    }
+    DrawRectangle(450, 600, 600, 200, RAYWHITE);
+    DrawText("AttacK", 450 + 600 / 4, 600 + 200 / 2, 20, BLACK);
+    DrawText("Item", 450 + 600 / 2, 600 + 200 / 2, 20, BLACK);
+    DrawText("Loggus", 450 + 3 * 600 / 4, 600 + 200 / 2, 20, BLACK);
 }
 
 
@@ -103,10 +131,12 @@ int main () {
     card vind_dsk_card = card(&vind_dsk);
 
     GameScreen currentScreen = TITLE;
+    Action current_action = CHAR_SELECT;
 
     while (!WindowShouldClose()){
 
-        switch(currentScreen){
+        switch(currentScreen)
+        {
             case TITLE:
             {
                 if (IsKeyPressed(KEY_ENTER)){
@@ -123,14 +153,15 @@ int main () {
 
         BeginDrawing();
         ClearBackground(GREEN);
-        switch(currentScreen){
+        switch(currentScreen)
+        {
             case TITLE:
             {
                 DrawTitleScreen();
             } break;
             case GAMEPLAY:
             {
-                DrawGameplayScreen(background_texture);
+                DrawGameplayScreen(background_texture, SCREEN_WIDTH, SCREEN_HEIGHT, current_action);
 
                 DrawText("Turn Order", (SCREEN_WIDTH - MeasureText("Turn Order", 50)) / 2, 10, 50, RAYWHITE);
 
